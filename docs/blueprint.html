@@ -1,0 +1,687 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Pulso Commerce Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: blueprint técnico — coluna central de leitura, faixas de camada codificadas por cor (bronze/prata/ouro/semântica) */
+:root{
+  --bg:#F4F5F7; --surface:#FFFFFF; --sunk:#EBEDF1; --fg:#151A22; --muted:#5B6473; --line:#D8DCE3;
+  --accent:#2F4BD1; --accent-soft:#E3E8FB;
+  --bronze:#A2602A; --bronze-soft:#F5E9DE;
+  --silver:#6B7684; --silver-soft:#E9ECEF;
+  --gold:#A57F0E; --gold-soft:#F6EFD6;
+  --sem:#2F4BD1; --sem-soft:#E3E8FB;
+  --good:#1F8A5B; --warn:#B7791F; --bad:#C2413A;
+  --code-bg:#151A22; --code-fg:#E6E9EF; --code-dim:#8A93A3; --code-key:#9DB3FF; --code-str:#E7C27A;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"IBM Plex Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1218; --surface:#171B23; --sunk:#1E232D; --fg:#E7EAF0; --muted:#98A1B0; --line:#2A303C;
+  --accent:#8EA2FF; --accent-soft:#1E2643;
+  --bronze:#D9935A; --bronze-soft:#2C2119; --silver:#AEB8C4; --silver-soft:#23272E;
+  --gold:#E0B93E; --gold-soft:#2B2614; --sem:#8EA2FF; --sem-soft:#1E2643;
+  --good:#4CC38A; --warn:#E3A84A; --bad:#EF6B63;
+  --code-bg:#0A0D12; --code-fg:#E6E9EF; --code-dim:#7D8696; --code-key:#9DB3FF; --code-str:#E7C27A;
+  color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1218; --surface:#171B23; --sunk:#1E232D; --fg:#E7EAF0; --muted:#98A1B0; --line:#2A303C;
+  --accent:#8EA2FF; --accent-soft:#1E2643;
+  --bronze:#D9935A; --bronze-soft:#2C2119; --silver:#AEB8C4; --silver-soft:#23272E;
+  --gold:#E0B93E; --gold-soft:#2B2614; --sem:#8EA2FF; --sem-soft:#1E2643;
+  --good:#4CC38A; --warn:#E3A84A; --bad:#EF6B63;
+  --code-bg:#0A0D12; --code-fg:#E6E9EF; --code-dim:#7D8696; --code-key:#9DB3FF; --code-str:#E7C27A;
+  color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:15px;line-height:1.6}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:20px;padding-block:0 64px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:700;letter-spacing:-.02em}
+h2{font-size:clamp(1.45rem,3vw,1.9rem);font-weight:700;letter-spacing:-.01em}
+h3{font-size:1.1rem;font-weight:700}
+p{margin:0;max-width:68ch}
+code,.mono{font-family:var(--f-mono);font-size:.86em}
+.eyebrow{font-family:var(--f-mono);font-size:.74rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lead{color:var(--muted);font-size:1.05rem}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* nav */
+nav.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+nav.top .inner{max-width:1120px;margin:0 auto;padding:10px 20px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:none}
+nav.top a{flex:none;text-decoration:none;color:var(--muted);font-size:.84rem;font-weight:500;padding:6px 10px;border-radius:6px}
+nav.top a:hover{background:var(--sunk);color:var(--fg)}
+
+/* hero */
+header.hero{padding-block:48px 28px;display:grid;gap:18px}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{font-family:var(--f-mono);font-size:.76rem;padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg)}
+.chip.b{border-color:var(--bronze);color:var(--bronze);background:var(--bronze-soft)}
+.chip.s{border-color:var(--silver);color:var(--silver);background:var(--silver-soft)}
+.chip.g{border-color:var(--gold);color:var(--gold);background:var(--gold-soft)}
+.chip.m{border-color:var(--sem);color:var(--sem);background:var(--sem-soft)}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden;margin-top:6px}
+.facts div{background:var(--surface);padding:14px 16px;display:grid;gap:2px}
+.facts b{font-family:var(--f-display);font-size:1.05rem}
+.facts span{color:var(--muted);font-size:.86rem}
+
+section{padding-block:44px 8px;display:grid;gap:18px;scroll-margin-top:56px}
+.sec-head{display:grid;gap:8px}
+
+/* architecture flow */
+.flow-scroll{overflow-x:auto;padding-bottom:6px}
+.flow{display:grid;grid-template-columns:repeat(6,minmax(170px,1fr));gap:14px;min-width:1060px}
+.col{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px;display:grid;gap:10px;align-content:start;position:relative;border-top:4px solid var(--c,var(--muted))}
+.col:not(:last-child)::after{content:"→";position:absolute;right:-13px;top:22px;color:var(--muted);font-size:1rem;background:var(--bg);line-height:1}
+.col h3{font-size:1rem;color:var(--c,var(--fg))}
+.col .sub{font-size:.78rem;color:var(--muted)}
+.col ul{margin:0;padding:0;list-style:none;display:grid;gap:4px}
+.col li{font-family:var(--f-mono);font-size:.74rem;padding:3px 6px;border-radius:4px;background:var(--sunk);overflow-wrap:anywhere}
+.col .tech{font-size:.76rem;color:var(--muted);border-top:1px dashed var(--line);padding-top:8px}
+.c-src{--c:var(--muted)} .c-b{--c:var(--bronze)} .c-s{--c:var(--silver)} .c-g{--c:var(--gold)} .c-m{--c:var(--sem)} .c-out{--c:var(--good)}
+
+.uc{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;display:grid;gap:8px;align-content:start;min-width:0}
+.card p,.card li{font-size:.92rem}
+.card ul{margin:0;padding-left:18px;display:grid;gap:4px}
+
+/* tables */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:.88rem;min-width:720px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--sunk);font-weight:500}
+tr:last-child td{border-bottom:0}
+td code{white-space:nowrap}
+.tag{display:inline-block;font-family:var(--f-mono);font-size:.7rem;padding:1px 7px;border-radius:4px;font-weight:500}
+.tag.b{background:var(--bronze-soft);color:var(--bronze)} .tag.s{background:var(--silver-soft);color:var(--silver)}
+.tag.g{background:var(--gold-soft);color:var(--gold)} .tag.m{background:var(--sem-soft);color:var(--sem)}
+
+/* code */
+.code-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:14px}
+figure.code{margin:0;min-width:0;display:grid;gap:6px}
+figure.code figcaption{font-size:.8rem;color:var(--muted);font-family:var(--f-mono)}
+pre{margin:0;background:var(--code-bg);color:var(--code-fg);border-radius:10px;padding:14px 16px;overflow-x:auto;font-family:var(--f-mono);font-size:.78rem;line-height:1.55}
+pre .k{color:var(--code-key)} pre .s{color:var(--code-str)} pre .c{color:var(--code-dim)}
+
+/* mockups */
+.tool-head{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.mock{border:1px solid var(--line);border-radius:12px;background:var(--surface);overflow:hidden}
+.mock-bar{display:flex;align-items:center;gap:10px;padding:8px 12px;border-bottom:1px solid var(--line);background:var(--sunk);font-size:.8rem;color:var(--muted);flex-wrap:wrap}
+.mock-bar .dots{display:flex;gap:5px}.mock-bar .dots i{width:9px;height:9px;border-radius:50%;background:var(--line);display:block}
+.mock-tabs{display:flex;gap:4px;flex-wrap:wrap}
+.mock-tabs span{font-size:.74rem;padding:3px 9px;border-radius:5px}
+.mock-tabs span.on{background:var(--surface);color:var(--fg);font-weight:600;border:1px solid var(--line)}
+.mock-body{padding:14px;display:grid;gap:12px}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.kpi{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:2px}
+.kpi small{font-size:.72rem;color:var(--muted)}
+.kpi b{font-family:var(--f-display);font-size:1.3rem;font-variant-numeric:tabular-nums}
+.kpi em{font-style:normal;font-size:.72rem;font-variant-numeric:tabular-nums}
+.up{color:var(--good)} .down{color:var(--bad)} .flat{color:var(--warn)}
+.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:10px}
+.panel{border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:grid;gap:8px;min-width:0}
+.panel h4{margin:0;font-size:.8rem;font-weight:600}
+.panel svg{width:100%;height:auto;display:block}
+.bars{display:grid;gap:6px}
+.bar{display:grid;grid-template-columns:96px 1fr 52px;gap:8px;align-items:center;font-size:.74rem}
+.bar .t{height:10px;border-radius:3px;background:var(--sunk);overflow:hidden}
+.bar .t i{display:block;height:100%;background:var(--accent)}
+.bar span:last-child{text-align:right;font-variant-numeric:tabular-nums;color:var(--muted)}
+.note{font-size:.76rem;color:var(--muted);font-style:italic}
+.ideas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:14px}
+.page-list{margin:0;padding:0;list-style:none;display:grid;gap:10px}
+.page-list li{display:grid;grid-template-columns:auto 1fr;gap:10px;font-size:.9rem}
+.page-list .n{font-family:var(--f-mono);font-size:.75rem;color:var(--muted);padding-top:2px}
+.page-list b{display:block}
+
+/* heatmap cohort */
+.cohort{display:grid;grid-template-columns:52px repeat(6,1fr);gap:2px;font-size:.66rem;font-family:var(--f-mono)}
+.cohort div{padding:3px 2px;text-align:center;border-radius:2px}
+.cohort .h{color:var(--muted)}
+
+/* funnel */
+.funnel{display:grid;gap:6px}
+.funnel div{height:26px;border-radius:4px;background:var(--accent);color:#fff;font-size:.74rem;display:flex;align-items:center;padding:0 10px;justify-content:space-between;font-variant-numeric:tabular-nums;min-width:120px}
+
+/* chat */
+.chat{display:grid;gap:10px;max-width:760px}
+.msg{padding:10px 14px;border-radius:12px;font-size:.88rem;max-width:92%;min-width:0}
+.msg.user{justify-self:end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+.msg.bot{background:var(--sunk);border-bottom-left-radius:4px;display:grid;gap:8px}
+.msg.bot pre{font-size:.72rem;padding:10px 12px}
+.trace{font-family:var(--f-mono);font-size:.72rem;color:var(--muted)}
+.mini{width:100%;border-collapse:collapse;font-size:.78rem;min-width:0}
+.mini td,.mini th{padding:4px 8px;border-bottom:1px solid var(--line)}
+.mini th{background:transparent;font-size:.66rem}
+.mini td:last-child,.mini th:last-child{text-align:right;font-variant-numeric:tabular-nums}
+.chat-input{display:flex;gap:8px;border:1px solid var(--line);border-radius:10px;padding:8px 10px;color:var(--muted);font-size:.85rem;background:var(--surface)}
+.chat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:14px;align-items:start}
+
+/* sequence */
+.steps{display:grid;gap:0;border-left:2px solid var(--line);margin-left:8px}
+.step{display:grid;gap:4px;padding:0 0 22px 22px;position:relative}
+.step::before{content:"";position:absolute;left:-7px;top:6px;width:12px;height:12px;border-radius:50%;background:var(--surface);border:2px solid var(--accent)}
+.step .when{font-family:var(--f-mono);font-size:.74rem;color:var(--accent)}
+.step p{font-size:.92rem;color:var(--muted)}
+.tree{font-size:.76rem}
+footer{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:var(--muted);font-size:.82rem}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+html{scroll-behavior:smooth}
+</style>
+
+<nav class="top"><div class="inner">
+  <a href="#visao">Visão geral</a><a href="#arquitetura">Arquitetura</a><a href="#unity">Unity Catalog</a>
+  <a href="#camadas">Camadas</a><a href="#semantica">Camada semântica</a><a href="#powerbi">Power BI</a>
+  <a href="#databricks">Dash Databricks</a><a href="#html">Dash HTML (Claude/Lovable)</a><a href="#chatbot">Chatbots</a><a href="#roadmap">Roadmap</a><a href="#repo">Repositório</a>
+</div></nav>
+
+<div class="wrap">
+
+<header class="hero" id="visao">
+  <span class="eyebrow">Portfólio · Analytics Engineering · Mockup do projeto</span>
+  <h1>Pulso Commerce</h1>
+  <p class="lead">Um lakehouse de ponta a ponta para um e-commerce web brasileiro: dados brutos de pedidos, catálogo, logística e navegação chegam ao Databricks, passam por Bronze, Silver e Gold, viram métricas governadas na camada semântica e são consumidos por três frentes: Power BI com RLS, um dashboard HTML feito com Claude/Lovable e chatbots que respondem perguntas de negócio.</p>
+  <div class="chips">
+    <span class="chip b">Bronze</span><span class="chip s">Silver</span><span class="chip g">Gold</span><span class="chip m">Semântica</span>
+    <span class="chip">Unity Catalog</span><span class="chip">Lakeflow Declarative Pipelines</span><span class="chip">Metric Views</span><span class="chip">Genie</span><span class="chip">Power BI + RLS</span><span class="chip">Claude API</span><span class="chip">Lovable</span>
+  </div>
+  <div class="facts">
+    <div><b>Dataset base</b><span>Olist Brazilian E-commerce (Kaggle) · ~100 mil pedidos reais 2016–2018, 9 tabelas</span></div>
+    <div><b>Dados web sintéticos</b><span>Clickstream e investimento em mídia gerados em Python, amarrados aos pedidos reais</span></div>
+    <div><b>Pergunta de negócio</b><span>Onde estamos ganhando e perdendo receita: no funil, no produto, no seller ou na entrega?</span></div>
+    <div><b>Persona</b><span>Diretoria comercial, gerentes regionais, time de marketing e sellers do marketplace</span></div>
+  </div>
+</header>
+
+<!-- ARQUITETURA -->
+<section id="arquitetura">
+  <div class="sec-head">
+    <span class="eyebrow">Fluxo ponta a ponta</span>
+    <h2>Arquitetura medallion no Databricks</h2>
+    <p class="lead">Cada coluna é uma etapa do fluxo. Toda a engenharia fica no Databricks; as ferramentas de consumo leem apenas da Gold e da camada semântica.</p>
+  </div>
+  <div class="flow-scroll"><div class="flow">
+    <div class="col c-src"><h3>Fontes</h3><span class="sub">Arquivos brutos</span>
+      <ul><li>olist_*.csv (9)</li><li>web_events.json</li><li>marketing_spend.csv</li><li>feriados_br.csv</li></ul>
+      <div class="tech">Upload para Volume <code>landing/raw</code>. Gerador Python simula a chegada diária de novos arquivos.</div></div>
+    <div class="col c-b"><h3>Bronze</h3><span class="sub">Cópia fiel + metadados</span>
+      <ul><li>brz_orders</li><li>brz_order_items</li><li>brz_payments</li><li>brz_reviews</li><li>brz_customers</li><li>brz_sellers</li><li>brz_products</li><li>brz_geolocation</li><li>brz_web_events</li><li>brz_marketing_spend</li></ul>
+      <div class="tech">Auto Loader (<code>read_files</code>) em streaming tables. Colunas <code>_source_file</code>, <code>_ingested_at</code>.</div></div>
+    <div class="col c-s"><h3>Silver</h3><span class="sub">Limpo, tipado, deduplicado</span>
+      <ul><li>slv_orders</li><li>slv_order_items</li><li>slv_payments</li><li>slv_reviews</li><li>slv_customers</li><li>slv_sellers</li><li>slv_products</li><li>slv_geolocation</li><li>slv_web_sessions</li><li>slv_marketing_spend</li></ul>
+      <div class="tech">Expectations de qualidade, padronização PT-BR, tradução de categorias, sessionização (30 min).</div></div>
+    <div class="col c-g"><h3>Gold</h3><span class="sub">Modelo dimensional</span>
+      <ul><li>dim_cliente · dim_seller</li><li>dim_produto · dim_data</li><li>dim_geografia · dim_canal</li><li>fct_pedidos</li><li>fct_itens_pedido</li><li>fct_sessoes_web</li><li>fct_marketing_diario</li><li>agg_rfm_cliente</li><li>agg_coorte_retencao</li><li>sec_acesso_regional</li></ul>
+      <div class="tech">Star schema (Kimball), surrogate keys, SCD2 em seller. Materialized views.</div></div>
+    <div class="col c-m"><h3>Semântica</h3><span class="sub">Métricas governadas</span>
+      <ul><li>mv_vendas</li><li>mv_logistica</li><li>mv_clientes</li><li>mv_funil_marketing</li><li>Genie Space</li><li>Glossário de métricas</li></ul>
+      <div class="tech">Unity Catalog Metric Views (YAML). Uma definição de GMV para todos os consumidores.</div></div>
+    <div class="col c-out"><h3>Consumo</h3><span class="sub">Três frentes</span>
+      <ul><li>AI/BI Dashboard</li><li>Genie (chatbot nativo)</li><li>Power BI + RLS</li><li>Dash HTML (Claude)</li><li>App Lovable + chatbot Claude</li></ul>
+      <div class="tech">SQL Warehouse serverless. Service principal só com SELECT em <code>gold</code> e <code>semantic</code>.</div></div>
+  </div></div>
+  <div class="uc">
+    <div class="card"><h3>Orquestração</h3><p>Um Lakeflow Job diário: gera arquivos novos → roda o pipeline declarativo (Bronze→Gold) → atualiza metric views → dispara refresh do Power BI via API.</p></div>
+    <div class="card"><h3>Qualidade de dados</h3><p>Expectations no Silver (<code>DROP ROW</code> e <code>WARN</code>), testes de unicidade de chave no Gold e uma tabela <code>ops.dq_resultados</code> que alimenta o painel de observabilidade.</p></div>
+    <div class="card"><h3>CI/CD</h3><p>Databricks Asset Bundles com ambientes <code>dev</code> e <code>prd</code>, deploy via GitHub Actions a cada merge na <code>main</code>. Isso mostra maturidade de engenharia para recrutadores.</p></div>
+  </div>
+</section>
+
+<!-- UNITY CATALOG -->
+<section id="unity">
+  <div class="sec-head">
+    <span class="eyebrow">Governança</span>
+    <h2>Estrutura no Unity Catalog</h2>
+    <p class="lead">Um catálogo por ambiente e um schema por camada. Permissões por grupo deixam explícito quem lê o quê.</p>
+  </div>
+  <div class="code-grid">
+    <figure class="code"><figcaption>Hierarquia catálogo › schema › objeto</figcaption>
+<pre class="tree">pulso_<span class="k">dev</span> | pulso_<span class="k">prd</span>
+├── landing     <span class="c"># Volume: /raw/olist, /raw/web, /raw/mkt</span>
+├── bronze      <span class="c"># streaming tables, append-only</span>
+├── silver      <span class="c"># tabelas limpas + expectations</span>
+├── gold        <span class="c"># dims, fatos, agregados, segurança</span>
+├── semantic    <span class="c"># metric views + funções p/ IA</span>
+└── ops         <span class="c"># logs de qualidade, auditoria, custo</span></pre></figure>
+    <figure class="code"><figcaption>Grants por grupo</figcaption>
+<pre><span class="k">GRANT</span> USE CATALOG <span class="k">ON CATALOG</span> pulso_prd <span class="k">TO</span> <span class="s">`grp_analistas`</span>;
+<span class="k">GRANT</span> SELECT <span class="k">ON SCHEMA</span> pulso_prd.gold     <span class="k">TO</span> <span class="s">`grp_analistas`</span>;
+<span class="k">GRANT</span> SELECT <span class="k">ON SCHEMA</span> pulso_prd.semantic <span class="k">TO</span> <span class="s">`grp_analistas`</span>;
+
+<span class="c">-- service principal dos chatbots: só a camada semântica</span>
+<span class="k">GRANT</span> SELECT <span class="k">ON SCHEMA</span> pulso_prd.semantic <span class="k">TO</span> <span class="s">`sp_chatbot`</span>;
+
+<span class="c">-- tags e comentários alimentam o Genie e o catálogo</span>
+<span class="k">ALTER TABLE</span> gold.dim_cliente <span class="k">ALTER COLUMN</span> email
+  <span class="k">SET TAGS</span> (<span class="s">'pii'</span> = <span class="s">'true'</span>);</pre></figure>
+  </div>
+</section>
+
+<!-- CAMADAS -->
+<section id="camadas">
+  <div class="sec-head">
+    <span class="eyebrow">Do bruto ao modelo dimensional</span>
+    <h2>O que acontece em cada camada</h2>
+  </div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Camada</th><th>Objeto</th><th>Grão</th><th>Transformações principais</th></tr></thead>
+    <tbody>
+      <tr><td><span class="tag b">bronze</span></td><td><code>brz_orders</code></td><td>1 linha por arquivo lido</td><td>Ingestão incremental com Auto Loader, schema evolution, metadados de origem. Nenhuma regra de negócio.</td></tr>
+      <tr><td><span class="tag b">bronze</span></td><td><code>brz_web_events</code></td><td>1 evento</td><td>JSON semiestruturado guardado como veio (<code>page_view</code>, <code>add_to_cart</code>, <code>checkout</code>, <code>purchase</code>).</td></tr>
+      <tr><td><span class="tag s">silver</span></td><td><code>slv_orders</code></td><td>1 pedido</td><td>Cast de timestamps, dedup por <code>order_id</code>, status traduzido, expectation “entrega ≥ compra”.</td></tr>
+      <tr><td><span class="tag s">silver</span></td><td><code>slv_products</code></td><td>1 produto</td><td>Join com tradução de categoria, peso e volume normalizados, categoria macro (Casa, Moda, Tech…).</td></tr>
+      <tr><td><span class="tag s">silver</span></td><td><code>slv_web_sessions</code></td><td>1 sessão</td><td>Sessionização por inatividade de 30 min, UTM → canal, flag de conversão ligando ao <code>order_id</code>.</td></tr>
+      <tr><td><span class="tag g">gold</span></td><td><code>fct_pedidos</code></td><td>1 pedido</td><td>GMV, frete, nº de itens, dias de entrega, dias de atraso, <code>flg_no_prazo</code>, nota da review.</td></tr>
+      <tr><td><span class="tag g">gold</span></td><td><code>fct_itens_pedido</code></td><td>1 item</td><td>Preço, frete rateado, FKs para produto, seller, cliente, data.</td></tr>
+      <tr><td><span class="tag g">gold</span></td><td><code>dim_seller</code></td><td>1 versão de seller</td><td>SCD tipo 2 (mudança de cidade/UF), surrogate key, <code>valid_from</code>/<code>valid_to</code>.</td></tr>
+      <tr><td><span class="tag g">gold</span></td><td><code>agg_rfm_cliente</code></td><td>1 cliente</td><td>Recência, frequência, valor; quintis e segmento (Campeões, Em risco, Hibernando…).</td></tr>
+      <tr><td><span class="tag g">gold</span></td><td><code>sec_acesso_regional</code></td><td>1 usuário × UF</td><td>Tabela de segurança usada pelo RLS do Power BI e por row filters no UC.</td></tr>
+    </tbody>
+  </table></div>
+  <div class="code-grid">
+    <figure class="code"><figcaption>Bronze · Auto Loader em pipeline declarativo</figcaption>
+<pre><span class="k">CREATE OR REFRESH STREAMING TABLE</span> bronze.brz_orders
+<span class="k">AS SELECT</span>
+  *,
+  _metadata.file_path  <span class="k">AS</span> _source_file,
+  current_timestamp()  <span class="k">AS</span> _ingested_at
+<span class="k">FROM STREAM</span> read_files(
+  <span class="s">'/Volumes/pulso_prd/landing/raw/olist/orders/'</span>,
+  format =&gt; <span class="s">'csv'</span>, header =&gt; true
+);</pre></figure>
+    <figure class="code"><figcaption>Silver · tipagem + expectations</figcaption>
+<pre><span class="k">CREATE OR REFRESH STREAMING TABLE</span> silver.slv_orders (
+  <span class="k">CONSTRAINT</span> pk_valida
+    <span class="k">EXPECT</span> (order_id <span class="k">IS NOT NULL</span>) <span class="k">ON VIOLATION DROP ROW</span>,
+  <span class="k">CONSTRAINT</span> entrega_apos_compra
+    <span class="k">EXPECT</span> (dt_entrega_cliente &gt;= dt_compra)
+)
+<span class="k">AS SELECT</span>
+  order_id, customer_id,
+  <span class="k">CASE</span> order_status <span class="k">WHEN</span> <span class="s">'delivered'</span> <span class="k">THEN</span> <span class="s">'Entregue'</span>
+       <span class="k">WHEN</span> <span class="s">'canceled'</span>  <span class="k">THEN</span> <span class="s">'Cancelado'</span> <span class="k">ELSE</span> initcap(order_status) <span class="k">END AS</span> status,
+  to_timestamp(order_purchase_timestamp)       <span class="k">AS</span> dt_compra,
+  to_timestamp(order_delivered_customer_date)  <span class="k">AS</span> dt_entrega_cliente,
+  to_timestamp(order_estimated_delivery_date)  <span class="k">AS</span> dt_entrega_estimada
+<span class="k">FROM STREAM</span> bronze.brz_orders;</pre></figure>
+    <figure class="code"><figcaption>Gold · fato de pedidos</figcaption>
+<pre><span class="k">CREATE OR REFRESH MATERIALIZED VIEW</span> gold.fct_pedidos <span class="k">AS</span>
+<span class="k">SELECT</span>
+  o.order_id,
+  c.cliente_sk, d.data_sk, g.geografia_sk,
+  <span class="k">SUM</span>(i.preco)                         <span class="k">AS</span> vl_gmv,
+  <span class="k">SUM</span>(i.frete)                         <span class="k">AS</span> vl_frete,
+  <span class="k">COUNT</span>(*)                             <span class="k">AS</span> qt_itens,
+  datediff(o.dt_entrega_cliente, o.dt_compra)           <span class="k">AS</span> dias_entrega,
+  datediff(o.dt_entrega_cliente, o.dt_entrega_estimada) <span class="k">AS</span> dias_atraso,
+  <span class="k">CAST</span>(o.dt_entrega_cliente &lt;= o.dt_entrega_estimada <span class="k">AS INT</span>) <span class="k">AS</span> flg_no_prazo
+<span class="k">FROM</span> silver.slv_orders o
+<span class="k">JOIN</span> silver.slv_order_items i <span class="k">USING</span> (order_id)
+<span class="k">JOIN</span> gold.dim_cliente  c <span class="k">ON</span> c.customer_id = o.customer_id
+<span class="k">JOIN</span> gold.dim_data     d <span class="k">ON</span> d.data = <span class="k">DATE</span>(o.dt_compra)
+<span class="k">JOIN</span> gold.dim_geografia g <span class="k">ON</span> g.cep_prefixo = c.cep_prefixo
+<span class="k">GROUP BY ALL</span>;</pre></figure>
+    <figure class="code"><figcaption>Gerador de clickstream sintético (Python)</figcaption>
+<pre><span class="c"># para cada pedido real, cria uma sessão que converteu;</span>
+<span class="c"># para cada conversão, ~40 sessões que não converteram</span>
+<span class="k">for</span> pedido <span class="k">in</span> pedidos.itertuples():
+    canal = random.choices(CANAIS, PESOS_CANAL)[0]
+    sessao = nova_sessao(pedido.customer_id, canal,
+                         fim=pedido.dt_compra, converteu=True)
+    eventos += funil(sessao, etapas=[<span class="s">"page_view"</span>, <span class="s">"product_view"</span>,
+                     <span class="s">"add_to_cart"</span>, <span class="s">"checkout"</span>, <span class="s">"purchase"</span>])
+    <span class="k">for</span> _ <span class="k">in</span> range(np.random.poisson(<span class="s">40</span>)):
+        eventos += funil(nova_sessao(canal=canal), abandono=True)</pre></figure>
+  </div>
+</section>
+
+<!-- SEMÂNTICA -->
+<section id="semantica">
+  <div class="sec-head">
+    <span class="eyebrow">Uma definição, vários consumidores</span>
+    <h2>Camada semântica</h2>
+    <p class="lead">As métricas são definidas uma vez como Metric Views no Unity Catalog. O AI/BI Dashboard, o Genie e o chatbot do Claude consultam essas views; o Power BI replica as mesmas regras em DAX e um teste compara os resultados.</p>
+  </div>
+  <div class="tbl-wrap"><table>
+    <thead><tr><th>Métrica</th><th>Definição</th><th>Metric View</th><th>Uso</th></tr></thead>
+    <tbody>
+      <tr><td><b>GMV</b></td><td>Soma do preço dos itens de pedidos não cancelados</td><td><span class="tag m">mv_vendas</span></td><td>Todas as frentes</td></tr>
+      <tr><td><b>Ticket médio</b></td><td>GMV ÷ pedidos distintos</td><td><span class="tag m">mv_vendas</span></td><td>Executivo, chatbot</td></tr>
+      <tr><td><b>Taxa de recompra</b></td><td>Clientes com 2+ pedidos ÷ clientes ativos no período</td><td><span class="tag m">mv_clientes</span></td><td>Clientes, coortes</td></tr>
+      <tr><td><b>% Entrega no prazo</b></td><td>Pedidos entregues até a data estimada ÷ pedidos entregues</td><td><span class="tag m">mv_logistica</span></td><td>Logística, RLS regional</td></tr>
+      <tr><td><b>Nota média</b></td><td>Média de <code>review_score</code> (1–5)</td><td><span class="tag m">mv_logistica</span></td><td>Sellers, logística</td></tr>
+      <tr><td><b>Conversão</b></td><td>Sessões com compra ÷ sessões</td><td><span class="tag m">mv_funil_marketing</span></td><td>Dash HTML, marketing</td></tr>
+      <tr><td><b>ROAS · CAC</b></td><td>GMV atribuído ÷ investimento · investimento ÷ novos clientes</td><td><span class="tag m">mv_funil_marketing</span></td><td>Dash HTML, chatbot</td></tr>
+    </tbody>
+  </table></div>
+  <div class="code-grid">
+    <figure class="code"><figcaption>semantic/mv_vendas.yaml · Unity Catalog Metric View</figcaption>
+<pre><span class="k">CREATE VIEW</span> pulso_prd.semantic.mv_vendas
+<span class="k">WITH METRICS LANGUAGE YAML AS</span> $$
+version: <span class="s">0.1</span>
+source: pulso_prd.gold.fct_itens_pedido
+filter: status &lt;&gt; <span class="s">'Cancelado'</span>
+joins:
+  - name: produto
+    source: pulso_prd.gold.dim_produto
+    on: source.produto_sk = produto.produto_sk
+  - name: geo
+    source: pulso_prd.gold.dim_geografia
+    on: source.geografia_sk = geo.geografia_sk
+dimensions:
+  - name: Mês
+    expr: DATE_TRUNC(<span class="s">'MONTH'</span>, dt_compra)
+  - name: Categoria
+    expr: produto.categoria_macro
+  - name: UF
+    expr: geo.uf
+measures:
+  - name: GMV
+    expr: SUM(preco)
+  - name: Pedidos
+    expr: COUNT(DISTINCT order_id)
+  - name: Ticket Médio
+    expr: SUM(preco) / COUNT(DISTINCT order_id)
+$$;</pre></figure>
+    <figure class="code"><figcaption>Consumo da métrica (igual em qualquer ferramenta)</figcaption>
+<pre><span class="k">SELECT</span>
+  `Categoria`,
+  <span class="k">MEASURE</span>(`GMV`)          <span class="k">AS</span> gmv,
+  <span class="k">MEASURE</span>(`Ticket Médio`) <span class="k">AS</span> ticket
+<span class="k">FROM</span> pulso_prd.semantic.mv_vendas
+<span class="k">WHERE</span> `Mês` &gt;= <span class="s">'2018-01-01'</span>
+<span class="k">GROUP BY ALL</span>
+<span class="k">ORDER BY</span> gmv <span class="k">DESC</span>;
+
+<span class="c">-- teste de consistência no Job:</span>
+<span class="c">-- GMV da metric view = GMV do Power BI (± 0,01%)</span></pre></figure>
+  </div>
+</section>
+
+<!-- POWER BI -->
+<section id="powerbi">
+  <div class="sec-head">
+    <div class="tool-head"><span class="eyebrow">Frente 1</span><span class="chip">Power BI · Dashboard + RLS</span></div>
+    <h2>Power BI: visão executiva com segurança por região</h2>
+    <p class="lead">Modelo estrela importado da Gold via conector Databricks (SQL Warehouse). Medidas DAX espelham a camada semântica. RLS dinâmico pela tabela <code>sec_acesso_regional</code>.</p>
+  </div>
+  <div class="mock">
+    <div class="mock-bar"><span class="dots"><i></i><i></i><i></i></span><span>Pulso Commerce.pbix</span>
+      <span class="mock-tabs"><span class="on">Executivo</span><span>Produtos</span><span>Clientes</span><span>Logística</span><span>Sellers</span></span>
+      <span style="margin-left:auto">Exibindo como: gerente.sudeste@pulso.com</span></div>
+    <div class="mock-body">
+      <div class="kpis">
+        <div class="kpi"><small>GMV</small><b>R$ 9,4 mi</b><em class="up">▲ 18,2% vs ano ant.</em></div>
+        <div class="kpi"><small>Pedidos</small><b>68.910</b><em class="up">▲ 15,7%</em></div>
+        <div class="kpi"><small>Ticket médio</small><b>R$ 136</b><em class="up">▲ 2,1%</em></div>
+        <div class="kpi"><small>Entrega no prazo</small><b>92,4%</b><em class="down">▼ 1,8 p.p.</em></div>
+        <div class="kpi"><small>Nota média</small><b>4,09</b><em class="flat">● estável</em></div>
+      </div>
+      <div class="panels">
+        <div class="panel"><h4>GMV mensal (R$ mil) · realizado vs meta</h4>
+          <svg viewBox="0 0 300 130" role="img" aria-label="Linha de GMV mensal">
+            <g stroke="var(--line)" stroke-width="1"><line x1="28" y1="20" x2="295" y2="20"/><line x1="28" y1="60" x2="295" y2="60"/><line x1="28" y1="100" x2="295" y2="100"/></g>
+            <g fill="var(--muted)" font-size="8" font-family="IBM Plex Mono, monospace"><text x="2" y="23">900</text><text x="2" y="63">600</text><text x="2" y="103">300</text>
+            <text x="30" y="122">jan</text><text x="120" y="122">mai</text><text x="210" y="122">set</text><text x="272" y="122">dez</text></g>
+            <polyline fill="none" stroke="var(--muted)" stroke-dasharray="4 3" stroke-width="1.5" points="32,80 56,76 80,72 104,68 128,64 152,60 176,56 200,52 224,48 248,44 272,40 290,36"/>
+            <path d="M32,88 L56,82 L80,70 L104,74 L128,62 L152,58 L176,60 L200,48 L224,50 L248,40 L272,30 L290,24 L290,100 L32,100 Z" fill="var(--accent-soft)"/>
+            <polyline fill="none" stroke="var(--accent)" stroke-width="2" points="32,88 56,82 80,70 104,74 128,62 152,58 176,60 200,48 224,50 248,40 272,30 290,24"/>
+            <circle cx="290" cy="24" r="3.5" fill="var(--accent)"/>
+          </svg></div>
+        <div class="panel"><h4>GMV por categoria macro</h4>
+          <div class="bars">
+            <div class="bar"><span>Casa &amp; Decoração</span><span class="t"><i style="width:92%"></i></span><span>R$ 2,1 mi</span></div>
+            <div class="bar"><span>Saúde &amp; Beleza</span><span class="t"><i style="width:78%"></i></span><span>R$ 1,8 mi</span></div>
+            <div class="bar"><span>Relógios &amp; Presentes</span><span class="t"><i style="width:61%"></i></span><span>R$ 1,4 mi</span></div>
+            <div class="bar"><span>Esporte &amp; Lazer</span><span class="t"><i style="width:52%"></i></span><span>R$ 1,2 mi</span></div>
+            <div class="bar"><span>Informática</span><span class="t"><i style="width:40%"></i></span><span>R$ 0,9 mi</span></div>
+          </div></div>
+        <div class="panel"><h4>% no prazo por UF (filtrado pelo RLS)</h4>
+          <div class="bars">
+            <div class="bar"><span>SP</span><span class="t"><i style="width:95%;background:var(--good)"></i></span><span>95,1%</span></div>
+            <div class="bar"><span>MG</span><span class="t"><i style="width:93%;background:var(--good)"></i></span><span>93,0%</span></div>
+            <div class="bar"><span>ES</span><span class="t"><i style="width:87%;background:var(--warn)"></i></span><span>87,4%</span></div>
+            <div class="bar"><span>RJ</span><span class="t"><i style="width:84%;background:var(--bad)"></i></span><span>84,2%</span></div>
+          </div>
+          <span class="note">Gerente do Sudeste só enxerga SP, MG, ES e RJ.</span></div>
+      </div>
+      <span class="note">Valores ilustrativos para o mockup.</span>
+    </div>
+  </div>
+  <div class="ideas">
+    <div class="card"><h3>Páginas do relatório</h3>
+      <ul class="page-list">
+        <li><span class="n">p1</span><span><b>Executivo</b>KPIs com variação YoY, GMV vs meta, mapa de calor dia da semana × hora.</span></li>
+        <li><span class="n">p2</span><span><b>Produtos</b>Curva ABC, Pareto de categorias, matriz preço × nota de review.</span></li>
+        <li><span class="n">p3</span><span><b>Clientes</b>Segmentos RFM, coortes de retenção, LTV por estado de origem.</span></li>
+        <li><span class="n">p4</span><span><b>Logística</b>Mapa de atraso por UF, prazo prometido vs real, impacto do atraso na nota.</span></li>
+        <li><span class="n">p5</span><span><b>Sellers</b>Ranking com drill-through, sellers em risco (nota &lt; 3,5 e atraso alto).</span></li>
+      </ul></div>
+    <div class="card"><h3>RLS dinâmico</h3>
+      <p>Tabela <code>sec_acesso_regional</code> (email, UF) relacionada a <code>dim_geografia</code>. Uma única role filtra pelo usuário logado.</p>
+<pre>[email] = <span class="k">USERPRINCIPALNAME</span>()</pre>
+      <p>Segunda role, <b>Seller</b>, filtra <code>dim_seller[email_seller]</code>, para que cada seller veja só os próprios pedidos. Teste com “Exibir como” e mostre isso em GIF no README.</p></div>
+    <div class="card"><h3>O que destacar no portfólio</h3>
+      <ul><li>Calculation groups para YTD, MoM e YoY</li><li>Field parameters para trocar a métrica do gráfico</li><li>Projeto salvo como <code>.pbip</code> versionado no Git</li><li>Refresh disparado pelo Job do Databricks via API REST</li></ul></div>
+  </div>
+</section>
+
+<!-- DATABRICKS DASH -->
+<section id="databricks">
+  <div class="sec-head">
+    <div class="tool-head"><span class="eyebrow">Frente 2</span><span class="chip">Databricks · AI/BI Dashboard</span></div>
+    <h2>Databricks: saúde da plataforma e dos dados</h2>
+    <p class="lead">Use o dashboard nativo para mostrar o lado de engenharia: frescor, qualidade e custo. É o painel que um Analytics Engineer olha antes de qualquer pessoa reclamar de número errado.</p>
+  </div>
+  <div class="mock">
+    <div class="mock-bar"><span class="dots"><i></i><i></i><i></i></span><span>Pulso · Data Health</span><span class="mock-tabs"><span class="on">Pipeline</span><span>Qualidade</span><span>Custo</span><span>Negócio</span></span></div>
+    <div class="mock-body">
+      <div class="kpis">
+        <div class="kpi"><small>Última carga Gold</small><b>06:12</b><em class="up">● dentro do SLA (07:00)</em></div>
+        <div class="kpi"><small>Linhas descartadas (Silver)</small><b>214</b><em class="flat">● 0,02% do lote</em></div>
+        <div class="kpi"><small>Expectations OK</small><b>37 / 38</b><em class="down">▼ entrega_apos_compra</em></div>
+        <div class="kpi"><small>Custo do pipeline · 30d</small><b>41 DBU</b><em class="up">▼ 12% após otimização</em></div>
+      </div>
+      <div class="panels">
+        <div class="panel"><h4>Duração do pipeline por dia (min)</h4>
+          <svg viewBox="0 0 300 110" role="img" aria-label="Barras de duração do pipeline">
+            <line x1="10" y1="92" x2="295" y2="92" stroke="var(--line)"/>
+            <g fill="var(--silver)">
+              <rect x="14" y="50" width="14" height="42"/><rect x="34" y="46" width="14" height="46"/><rect x="54" y="52" width="14" height="40"/><rect x="74" y="44" width="14" height="48"/><rect x="94" y="48" width="14" height="44"/><rect x="114" y="40" width="14" height="52"/><rect x="134" y="20" width="14" height="72" fill="var(--bad)"/><rect x="154" y="54" width="14" height="38"/><rect x="174" y="56" width="14" height="36"/><rect x="194" y="58" width="14" height="34"/><rect x="214" y="57" width="14" height="35"/><rect x="234" y="60" width="14" height="32"/><rect x="254" y="59" width="14" height="33"/><rect x="274" y="61" width="14" height="31" fill="var(--accent)"/></g>
+            <text x="126" y="15" font-size="8" fill="var(--bad)" font-family="IBM Plex Mono, monospace">reprocessamento</text>
+          </svg></div>
+        <div class="panel"><h4>Violações por expectation · 7 dias</h4>
+          <div class="bars">
+            <div class="bar"><span>entrega_apos_compra</span><span class="t"><i style="width:70%;background:var(--warn)"></i></span><span>151</span></div>
+            <div class="bar"><span>pk_valida</span><span class="t"><i style="width:22%;background:var(--bad)"></i></span><span>48</span></div>
+            <div class="bar"><span>cep_valido</span><span class="t"><i style="width:8%;background:var(--warn)"></i></span><span>15</span></div>
+          </div></div>
+      </div>
+      <span class="note">Valores ilustrativos para o mockup. Fonte: event log do pipeline + <code>system.billing.usage</code>.</span>
+    </div>
+  </div>
+  <div class="ideas">
+    <div class="card"><h3>Páginas do AI/BI Dashboard</h3>
+      <ul><li><b>Pipeline:</b> frescor por tabela, duração, falhas (event log do Lakeflow)</li><li><b>Qualidade:</b> expectations, linhas descartadas, tendência</li><li><b>Custo:</b> DBUs por job e warehouse (system tables)</li><li><b>Negócio:</b> 4 KPIs lidos direto de <code>mv_vendas</code>, provando que a métrica bate com o Power BI</li></ul></div>
+    <div class="card"><h3>Genie no mesmo espaço</h3><p>Ative “Ask Genie” no dashboard, apontando para as metric views. Assim o painel nativo também ganha perguntas em linguagem natural, que é o chatbot exigido nas regras do projeto.</p></div>
+  </div>
+</section>
+
+<!-- HTML DASH -->
+<section id="html">
+  <div class="sec-head">
+    <div class="tool-head"><span class="eyebrow">Frente 3</span><span class="chip">Claude / Lovable · Dashboard HTML</span></div>
+    <h2>Dash HTML: funil web e marketing</h2>
+    <p class="lead">Um app web construído com Lovable (ou um artifact HTML gerado com Claude) focado no que o Power BI não cobre bem: funil de navegação, canais e ROAS. Os dados vêm da camada semântica via API do SQL Warehouse.</p>
+  </div>
+  <div class="mock">
+    <div class="mock-bar"><span class="dots"><i></i><i></i><i></i></span><span>pulso-growth.lovable.app</span><span class="mock-tabs"><span class="on">Funil</span><span>Canais</span><span>Coortes</span><span>Perguntar à IA</span></span></div>
+    <div class="mock-body">
+      <div class="kpis">
+        <div class="kpi"><small>Sessões</small><b>2,8 mi</b><em class="up">▲ 9%</em></div>
+        <div class="kpi"><small>Conversão</small><b>2,4%</b><em class="up">▲ 0,3 p.p.</em></div>
+        <div class="kpi"><small>ROAS</small><b>5,2×</b><em class="down">▼ 0,4×</em></div>
+        <div class="kpi"><small>CAC</small><b>R$ 31</b><em class="down">▲ R$ 3</em></div>
+      </div>
+      <div class="panels">
+        <div class="panel"><h4>Funil de conversão</h4>
+          <div class="funnel">
+            <div style="width:100%"><span>Sessões</span><span>2.810.000</span></div>
+            <div style="width:62%"><span>Viu produto</span><span>1.742.000</span></div>
+            <div style="width:24%"><span>Carrinho</span><span>674.000</span></div>
+            <div style="width:9%"><span>Checkout</span><span>253.000</span></div>
+            <div style="width:5%;background:var(--good)"><span>Compra</span><span>67.400</span></div>
+          </div></div>
+        <div class="panel"><h4>ROAS por canal</h4>
+          <div class="bars">
+            <div class="bar"><span>E-mail / CRM</span><span class="t"><i style="width:95%"></i></span><span>11,8×</span></div>
+            <div class="bar"><span>Orgânico</span><span class="t"><i style="width:80%"></i></span><span>n/a</span></div>
+            <div class="bar"><span>Google Ads</span><span class="t"><i style="width:48%"></i></span><span>5,9×</span></div>
+            <div class="bar"><span>Meta Ads</span><span class="t"><i style="width:30%"></i></span><span>3,7×</span></div>
+            <div class="bar"><span>Afiliados</span><span class="t"><i style="width:22%"></i></span><span>2,6×</span></div>
+          </div></div>
+        <div class="panel"><h4>Retenção por coorte (% que recomprou)</h4>
+          <div class="cohort" id="cohort"></div></div>
+      </div>
+      <span class="note">Valores ilustrativos para o mockup. O Olist real tem recompra baixa (~3%), o que rende um bom insight para o README.</span>
+    </div>
+  </div>
+  <div class="ideas">
+    <div class="card"><h3>Como os dados chegam ao app</h3>
+      <ul><li>Lovable (React) chama uma Edge Function do Supabase</li><li>A função usa o token do <code>sp_chatbot</code> e chama a <b>SQL Statement Execution API</b> do Databricks</li><li>Consultas fixas e parametrizadas sobre as metric views; nada de SQL vindo do navegador</li><li>Cache de 1 hora para não acordar o warehouse a cada clique</li></ul></div>
+    <div class="card"><h3>Alternativa 100% Databricks</h3><p>Publicar o mesmo front como <b>Databricks App</b> (Streamlit, Dash ou React). Mostra que você sabe entregar dentro da plataforma, com a autenticação e as permissões do Unity Catalog.</p></div>
+    <div class="card"><h3>Versão Claude</h3><p>Exporte um snapshot JSON das metric views e peça ao Claude um dashboard HTML de página única. Bom para um “relatório semanal de growth” publicado como link e anexado ao README.</p></div>
+  </div>
+</section>
+
+<!-- CHATBOT -->
+<section id="chatbot">
+  <div class="sec-head">
+    <span class="eyebrow">IA aplicada a negócio</span>
+    <h2>Chatbots que respondem perguntas de negócio</h2>
+    <p class="lead">Dois chatbots, a mesma camada semântica. O Genie mostra domínio da plataforma; o chatbot Claude mostra que você sabe construir o seu próprio agente com tool use e guardrails.</p>
+  </div>
+  <div class="chat-grid">
+    <div class="card" style="gap:12px">
+      <div class="tool-head"><span class="chip m">Chatbot no app Lovable · Claude API</span></div>
+      <div class="chat">
+        <div class="msg user">Por que a nota média caiu no Rio de Janeiro no último trimestre?</div>
+        <div class="msg bot">
+          <span class="trace">⚙ consultar_metricas(mv_logistica · UF = RJ · por mês)</span>
+          <table class="mini"><thead><tr><th>Mês</th><th>% no prazo</th><th>Nota</th></tr></thead>
+            <tbody><tr><td>jun/18</td><td>91,0%</td><td>4,12</td></tr><tr><td>jul/18</td><td>86,3%</td><td>3,94</td></tr><tr><td>ago/18</td><td>79,8%</td><td>3,71</td></tr></tbody></table>
+          <span>A queda acompanha os atrasos: o % de entregas no prazo no RJ caiu 11 p.p. em três meses. Pedidos atrasados têm nota média 2,6 contra 4,3 dos entregues no prazo. Quer ver os sellers com mais atraso no estado?</span>
+        </div>
+        <div class="msg user">Sim, top 5.</div>
+        <div class="chat-input"><span>Pergunte sobre vendas, clientes, entregas ou marketing…</span></div>
+      </div>
+      <span class="note">Conversa ilustrativa.</span>
+    </div>
+    <div class="card">
+      <h3>Como funciona por dentro</h3>
+      <ul>
+        <li>System prompt com o glossário de métricas (exportado do Unity Catalog) e regras de resposta</li>
+        <li>Tool <code>consultar_metricas</code>: Claude escolhe metric view, medidas, dimensões e filtros em JSON</li>
+        <li>O backend monta o SQL com <code>MEASURE()</code>; o modelo nunca escreve SQL livre</li>
+        <li>Service principal só lê <code>semantic</code>; limite de linhas e timeout</li>
+        <li>Tool <code>gerar_grafico</code> devolve spec para o front renderizar</li>
+        <li>Log de perguntas em <code>ops.chat_log</code> para avaliar acurácia</li>
+      </ul>
+<pre>{
+  <span class="s">"name"</span>: <span class="s">"consultar_metricas"</span>,
+  <span class="s">"input_schema"</span>: {
+    <span class="s">"metric_view"</span>: <span class="s">"mv_vendas | mv_logistica | ..."</span>,
+    <span class="s">"medidas"</span>:     [<span class="s">"GMV"</span>, <span class="s">"Ticket Médio"</span>],
+    <span class="s">"dimensoes"</span>:   [<span class="s">"Mês"</span>, <span class="s">"UF"</span>],
+    <span class="s">"filtros"</span>:     [{<span class="s">"campo"</span>: <span class="s">"UF"</span>, <span class="s">"op"</span>: <span class="s">"="</span>, <span class="s">"valor"</span>: <span class="s">"RJ"</span>}]
+  }
+}</pre>
+    </div>
+  </div>
+  <div class="ideas">
+    <div class="card"><h3>Genie Space (nativo)</h3>
+      <ul><li>Fontes: as 4 metric views + <code>dim_data</code></li><li>Instruções: “ano fiscal = ano civil”, “GMV exclui cancelados”, “responda em PT-BR”</li><li>Trusted assets: 5 consultas SQL validadas para perguntas frequentes</li><li>Benchmarks: 20 perguntas com resposta esperada para medir acurácia</li></ul></div>
+    <div class="card"><h3>Perguntas para a demo</h3>
+      <ul><li>Qual categoria mais cresceu em 2018?</li><li>Quais sellers estão com nota abaixo de 3,5 e atraso acima de 10%?</li><li>Qual canal traz clientes que mais recompram?</li><li>Quanto do GMV vem de clientes Campeões no RFM?</li><li>Compare o prazo de entrega do Norte com o do Sudeste.</li></ul></div>
+    <div class="card"><h3>Avaliação</h3><p>Rode as mesmas 20 perguntas nos dois bots e publique a tabela de acurácia no README. Comparar Genie e Claude com números é um diferencial raro em portfólio.</p></div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap">
+  <div class="sec-head">
+    <span class="eyebrow">Sequência de entrega</span>
+    <h2>Roadmap sugerido</h2>
+    <p class="lead">A ordem importa: cada fase depende da anterior. Publique um post curto no LinkedIn ao fim de cada fase.</p>
+  </div>
+  <div class="steps">
+    <div class="step"><span class="when">Semana 1</span><h3>Fundação</h3><p>Workspace Databricks (Free Edition), catálogos, schemas, volume landing, repositório Git com Asset Bundle, download do Olist e gerador de clickstream.</p></div>
+    <div class="step"><span class="when">Semana 2</span><h3>Bronze e Silver</h3><p>Pipeline declarativo com Auto Loader, expectations, sessionização e documentação das colunas no Unity Catalog.</p></div>
+    <div class="step"><span class="when">Semana 3</span><h3>Gold</h3><p>Modelo estrela, SCD2 em seller, RFM, coortes, tabela de segurança. Diagrama do modelo no README.</p></div>
+    <div class="step"><span class="when">Semana 4</span><h3>Camada semântica + Databricks</h3><p>Metric views, AI/BI Dashboard de Data Health, Genie Space com benchmarks, Job orquestrando tudo.</p></div>
+    <div class="step"><span class="when">Semana 5</span><h3>Power BI</h3><p>Modelo, medidas DAX, 5 páginas, RLS regional e de seller, projeto <code>.pbip</code> no Git.</p></div>
+    <div class="step"><span class="when">Semana 6</span><h3>Lovable, Claude e entrega</h3><p>App de growth, chatbot com tool use, avaliação dos bots, vídeo de 3 minutos e README final.</p></div>
+  </div>
+</section>
+
+<!-- REPO -->
+<section id="repo">
+  <div class="sec-head">
+    <span class="eyebrow">Organização no GitHub</span>
+    <h2>Estrutura do repositório</h2>
+  </div>
+  <div class="code-grid">
+    <figure class="code"><figcaption>pulso-commerce/</figcaption>
+<pre class="tree">pulso-commerce/
+├── databricks.yml              <span class="c"># Asset Bundle (dev/prd)</span>
+├── resources/
+│   ├── pipeline_medallion.yml
+│   └── job_diario.yml
+├── src/
+│   ├── 00_setup/unity_catalog.sql
+│   ├── 01_gerador/gerar_web_events.py
+│   ├── 10_bronze/*.sql
+│   ├── 20_silver/*.sql
+│   ├── 30_gold/*.sql
+│   ├── 40_semantic/mv_*.yaml
+│   └── 50_ops/qualidade.sql
+├── powerbi/PulsoCommerce.pbip
+├── app/                        <span class="c"># Lovable + Edge Functions</span>
+├── chatbot/                    <span class="c"># prompts, tools, avaliação</span>
+├── docs/
+│   ├── arquitetura.png
+│   ├── modelo_dimensional.png
+│   └── dicionario_metricas.md
+└── .github/workflows/deploy.yml</pre></figure>
+    <div class="card"><h3>README que vende o projeto</h3>
+      <ul><li>Problema de negócio em 3 linhas e 3 insights com números</li><li>Diagrama da arquitetura (esta página serve de base)</li><li>GIFs: RLS no Power BI, pergunta no Genie, pergunta no chatbot Claude</li><li>Decisões técnicas e trade-offs (por que metric views, por que SCD2 só em seller)</li><li>Como rodar: <code>databricks bundle deploy -t dev</code></li><li>Tabela de acurácia dos chatbots</li></ul></div>
+  </div>
+</section>
+
+<footer>Pulso Commerce é um nome fictício para o projeto. Dataset base: Olist Brazilian E-commerce Public Dataset (Kaggle). Todos os números dos mockups são ilustrativos.</footer>
+</div>
+
+<script>
+(function(){
+  var el=document.getElementById('cohort'); if(!el) return;
+  var heads=['','M0','M1','M2','M3','M4','M5'];
+  var rows=[['jan/18',100,4.1,2.9,2.4,2.0,1.8],['fev/18',100,3.8,2.7,2.2,1.9,null],['mar/18',100,4.4,3.1,2.5,null,null],['abr/18',100,3.6,2.6,null,null,null],['mai/18',100,3.9,null,null,null,null]];
+  var html='';
+  heads.forEach(function(h){html+='<div class="h">'+h+'</div>';});
+  rows.forEach(function(r){
+    html+='<div class="h">'+r[0]+'</div>';
+    for(var i=1;i<r.length;i++){
+      var v=r[i];
+      if(v===null){html+='<div></div>';continue;}
+      var a=i===1?0.85:Math.min(0.85,0.12+v/6);
+      var txt=i===1?'100':String(v).replace('.',',');
+      html+='<div style="background:color-mix(in srgb,var(--accent) '+Math.round(a*100)+'%,transparent);color:'+(a>0.5?'#fff':'var(--fg)')+'">'+txt+'</div>';
+    }
+  });
+  el.innerHTML=html;
+})();
+</script>
+
+</body></html>

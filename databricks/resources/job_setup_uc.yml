@@ -1,0 +1,12 @@
+# Job de setup do Unity Catalog: cria catálogo, schemas e volume do ambiente.
+# Roda em compute serverless (sem cluster declarado).
+resources:
+  jobs:
+    setup_unity_catalog:
+      name: pulso_setup_unity_catalog
+      tasks:
+        - task_key: setup_uc
+          notebook_task:
+            notebook_path: ../src/00_setup/unity_catalog.sql
+            base_parameters:
+              catalogo: ${var.catalogo}

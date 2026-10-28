@@ -1,0 +1,27 @@
+# Credenciais e configurações locais (nunca versionar)
+.databrickscfg
+.env
+.env.*
+kaggle.json
+
+# Databricks Asset Bundles
+.databricks/
+
+# Dados baixados localmente
+data/
+*.zip
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Power BI (arquivos locais do .pbip)
+**/.pbi/localSettings.json
+**/.pbi/cache.abf
+
+# Sistema / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.claude/settings.local.json
