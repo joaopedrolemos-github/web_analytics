@@ -23,7 +23,7 @@ Fontes (Olist + web sintético) → landing (Volume) → Bronze → Silver → G
 ## Progresso
 
 - [x] Parte 1 — Fundação (repositório, Unity Catalog, bundle)
-- [ ] Parte 2 — Ingestão Olist
+- [x] Parte 2 — Ingestão Olist (Kaggle → landing em lotes diários)
 - [ ] Parte 3 — Bronze
 - [ ] Parte 4 — Silver
 - [ ] Parte 5 — Dados sintéticos
@@ -42,7 +42,13 @@ cd databricks
 databricks bundle validate -t dev
 databricks bundle deploy -t dev
 databricks bundle run setup_unity_catalog -t dev
+databricks bundle run ingestao_olist -t dev   # requer o secret pulso/kaggle_api_token
 ```
+
+## Decisões técnicas
+
+- **Chegada simulada:** o histórico do Olist é reproduzido em lotes diários (`landing/raw/olist/<tabela>/dt_lote=AAAA-MM-DD/`). A primeira execução libera tudo até 30/06/2018; cada execução seguinte libera mais um dia, o que permite demonstrar a ingestão incremental do Auto Loader. O controle fica em `ops.controle_lotes_olist`.
+- **Simplificação:** o pedido chega já com o status final (não há CDC de status).
 
 ## Estrutura
 

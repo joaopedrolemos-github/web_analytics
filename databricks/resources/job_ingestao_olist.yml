@@ -1,0 +1,23 @@
+# Job de ingestão do Olist: baixa do Kaggle (se preciso) e libera o próximo lote no landing.
+# Primeira execução libera até data_corte_inicial; as seguintes, dias_por_execucao dias.
+resources:
+  jobs:
+    ingestao_olist:
+      name: pulso_ingestao_olist
+      parameters:
+        - name: catalogo
+          default: ${var.catalogo}
+        - name: data_corte_inicial
+          default: "2018-06-30"
+        - name: dias_por_execucao
+          default: "1"
+      tasks:
+        - task_key: baixar_olist
+          notebook_task:
+            notebook_path: ../src/01_ingestao/baixar_olist.py
+
+        - task_key: liberar_lotes
+          depends_on:
+            - task_key: baixar_olist
+          notebook_task:
+            notebook_path: ../src/01_ingestao/liberar_lotes_olist.py

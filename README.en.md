@@ -25,7 +25,7 @@ Table and column names are in Portuguese (snake_case), matching the business dom
 ## Progress
 
 - [x] Part 1 — Foundation (repository, Unity Catalog, bundle)
-- [ ] Part 2 — Olist ingestion
+- [x] Part 2 — Olist ingestion (Kaggle → landing in daily batches)
 - [ ] Part 3 — Bronze
 - [ ] Part 4 — Silver
 - [ ] Part 5 — Synthetic data
@@ -44,7 +44,13 @@ cd databricks
 databricks bundle validate -t dev
 databricks bundle deploy -t dev
 databricks bundle run setup_unity_catalog -t dev
+databricks bundle run ingestao_olist -t dev   # requires the pulso/kaggle_api_token secret
 ```
+
+## Technical decisions
+
+- **Simulated arrival:** Olist history is replayed in daily batches (`landing/raw/olist/<table>/dt_lote=YYYY-MM-DD/`). The first run releases everything up to 2018-06-30; each following run releases one more day, showcasing Auto Loader incremental ingestion. Control table: `ops.controle_lotes_olist`.
+- **Simplification:** orders arrive with their final status (no status CDC).
 
 ---
 *Pulso Commerce is a fictional name. Base dataset: Olist Brazilian E-commerce Public Dataset (Kaggle).*
